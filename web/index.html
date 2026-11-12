@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="gbig-token" content="__GBIG_TOKEN__">
+  <title>Image Batch Studio</title>
+  <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+  <header class="top">
+    <a class="brand" href="#/">Image Batch Studio</a>
+    <span class="ws" id="ws-name"></span>
+    <nav>
+      <a href="#/" data-nav="batches">Batches</a>
+      <a href="#/jobs" data-nav="jobs">Jobs monitor</a>
+      <a href="#/files" data-nav="files">Files &amp; integrity</a>
+    </nav>
+    <span class="pill" id="key-pill"></span>
+  </header>
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+  <main id="main"><p class="muted">Loading…</p></main>
+  <script src="/static/app.js"></script>
+</body>
+</html>

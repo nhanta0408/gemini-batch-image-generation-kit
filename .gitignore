@@ -1,0 +1,12 @@
+# Everything a person makes (projects, pictures, history, logs, the machine's project list) lives here.
+output/
+# The Gemini API key.
+.env
+# Older layouts, kept out in case they are still on disk.
+projects/
+local.json
+.gbig/
+
+__pycache__/
+*.pyc
+.DS_Store

@@ -1,0 +1,7 @@
+# Secrets and tool state never go to git.
+.env
+.gbig/
+# Gemini job files are large and can be downloaded again; output pictures are yours to decide:
+batches/*/jobs/*/results.jsonl
+batches/*/jobs/*/*.part
+.DS_Store

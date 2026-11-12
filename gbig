@@ -1,0 +1,5 @@
+#!/bin/bash
+# Tool-level launcher: ./gbig init <folder>. Inside a workspace use that workspace's own ./gbig.
+HERE="$(cd "$(dirname "$0")" && pwd)"
+. "$HERE/scripts/find-python.sh"
+exec "$PY" "$HERE/gbig.py" "$@"
