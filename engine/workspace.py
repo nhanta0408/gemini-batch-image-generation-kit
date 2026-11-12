@@ -165,8 +165,10 @@ class Workspace:
 
     @property
     def env(self) -> dict:
-        # The tool's .env serves every project; a project's own .env (optional) overrides it.
-        return {**_read_env(TOOL_ENV), **_read_env(self.root / ".env")}
+        # The tool's .env serves every project; a project's own .env (optional) overrides it. The repo root is not
+        # a project: reading its .env here would bypass GBIG_STATE_DIR and leak the real key into tests and demos.
+        own = {} if self.root == TOOL_ROOT else _read_env(self.root / ".env")
+        return {**_read_env(TOOL_ENV), **own}
 
     def setting(self, name: str, fallback: str = "") -> str:
         return os.getenv(name) or self.env.get(name) or fallback

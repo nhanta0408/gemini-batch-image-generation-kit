@@ -19,6 +19,7 @@ engine/
 web/                    dashboard (plain HTML/CSS/JS, no build step)
 templates/project/      files copied into a new project ({{TOOL_ROOT}} is replaced, dot- becomes .)
 docs/                   prompt-guide.md (read by the assistant), this file
+guideline/              user guide: README.md (annotated screenshots), features.md (every feature)
 tests/                  fake_gemini.py (local stand-in for the API) + test_flow.py
 .env                   the API key, gitignored
 output/                all user data, gitignored: local.json (projects, stored as relative paths), .gbig/

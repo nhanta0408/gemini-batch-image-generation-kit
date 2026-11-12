@@ -1,80 +1,74 @@
-# Gemini Batch Image Generation Tool
+# Gemini Batch Image Generation Kit
 
-Tạo ảnh stock / minh hoạ hàng loạt bằng **Gemini Batch API** (rẻ hơn 50% so với gọi thường). Mọi thứ chạy
-trên máy bạn: một server Python nhỏ phục vụ dashboard HTML ở `http://127.0.0.1:8765`, không host ở đâu cả.
+Make whole sets of images (stock photos, illustrations, banners) with Google Gemini, at **half the normal
+price** through the Gemini **Batch API**. Everything runs on your own computer: a small Python server shows a
+dashboard at `http://127.0.0.1:8765`. Nothing is hosted.
 
-Tool này dành cho người **có AI assistant riêng** (Claude Code, Codex, Cursor, Gemini CLI...). AI đọc
-`AGENTS.md` rồi lo việc: hỏi nhu cầu, viết prompt, chạy lệnh, theo dõi job. Bạn cần một Gemini API key.
+This kit is for people who use an **AI assistant** (Claude Code, Codex, Cursor, Gemini CLI...). The assistant
+reads [`AGENTS.md`](AGENTS.md) and does the technical work: it writes the prompts, runs the commands and
+watches the jobs. You decide what to make and approve the results.
 
-## Mở dashboard
+![Welcome screen](guideline/images/01-welcome.jpg)
 
-- **Bấm đúp `Open Dashboard.command`** trong thư mục này (Finder), hoặc
-- gõ `./gbig open`, hoặc nhờ AI: *"mở dashboard"*.
+## What you need
 
-Dashboard chạy nền, đóng Terminal vẫn chạy. Mở lại lúc nào cũng được (không lỗi nếu đang chạy).
-Tắt: `./gbig stop`. Chưa có project thì trang sẽ hướng dẫn nên nói gì với AI.
+- A Mac or Linux computer with Python 3.9 or newer (macOS already has it). Nothing else to install.
+- A Gemini API key from [Google AI Studio](https://aistudio.google.com/apikey), with billing turned on.
 
-## Bắt đầu
+## Start
 
 ```bash
 git clone https://github.com/nhanta0408/gemini-batch-image-generation-kit.git
 cd gemini-batch-image-generation-kit
-claude          # hoặc AI assistant bạn dùng, mở trong thư mục này
 ```
 
-Rồi nói với AI, ví dụ: *"Tôi cần 20 ảnh văn phòng khoẻ mạnh cho blog, phụ nữ 25-50 tuổi."*
-AI sẽ hỏi API key, chỗ lưu ảnh, rồi dẫn bạn qua từng bước.
+Then open the dashboard and your AI assistant in this folder:
 
-Cần Python 3.9+ (macOS có sẵn; nếu máy báo về giấy phép Xcode: `sudo xcodebuild -license accept`).
-Không cần cài thêm thư viện nào.
+- **Double-click `Open Dashboard.command`** (macOS), or run `./gbig open`.
+- Start your assistant here (for example `claude`) and tell it what you need:
+  *"I need 20 photos of a healthy office for our blog, 16:9."*
 
-## Ảnh được lưu ở đâu
+The dashboard keeps running in the background, even after you close the terminal. Stop it with `./gbig stop`.
 
-Không bao giờ nằm lẫn với source code:
+## How it works
 
-- Mặc định: `output/<tên>/` trong thư mục này. Cả `output/` (project, lịch sử, log) đều nằm trong `.gitignore`.
-- Hoặc thư mục bạn chọn: `./gbig init <tên> --dir ~/Pictures`. Đổi mặc định cho mọi project mới:
-  `./gbig config --projects-dir <thư mục>`.
+1. **Create a project** and add your Gemini key (dashboard buttons, or ask the assistant).
+2. **Create a batch**: one set of images with a shared topic, look and shape.
+3. **Your assistant writes the prompts.** They appear as *Draft prompt*.
+4. **Approve** the prompts you want, then press **Generate**. You see the number of images and the cost first.
+5. Gemini draws them in batch (usually minutes, at most 24 hours). The dashboard downloads them by itself.
+6. **Review**: mark each image *OK*, or *Redo* with a *Quick fix* that tells Gemini what to change.
 
-`git pull` bản mới của tool không đụng vào ảnh hay prompt của bạn.
+Read the [quick guide with screenshots](guideline/README.md), or the
+[full feature guide](guideline/features.md).
 
-## Dashboard có gì
+## Where your images go
 
-- **Batch**: topic, tóm tắt, prompt đầy đủ (mở/đóng), khung kết quả (trống khi chưa có ảnh), approve / drop,
-  OK / Redo, sửa prompt, nút **Generate with Gemini Batch** (hiện số ảnh + chi phí ước tính, xác nhận rồi mới
-  gửi; nút chạy `gbig.py gen submit` thành một tiến trình Python riêng).
-- **Jobs monitor**: trạng thái từng job, số ảnh, thời gian, chi phí. Tự kiểm tra mỗi phút và tải ảnh về;
-  có Check now, Cancel, log.
-- **Files & integrity**: so MD5 hiện tại với MD5 lúc Gemini trả ảnh: `ok`, `modified`, `renamed` (kèm tên
-  mới), `missing`, `untracked`.
-- Menu chọn project khi có nhiều project.
+Your work never mixes with the source code:
 
-## Một project gồm gì
+- By default everything goes to `output/` in this folder: projects, images, history and logs. `output/` is
+  ignored by git, so `git pull` updates the kit without touching your work.
+- Or pick any folder when you create a project (for example `~/Pictures`).
+- An image that is drawn again is never lost: the earlier version moves to `images/legacy/`.
 
-```
-<project>/
-  memory.md             ghi chú + bảng tự động: batch nào, job nào ra file nào, MD5, còn nguyên hay đã sửa
-  project.json          tên, model / tỉ lệ khung mặc định
-  batches/<batch>/
-    batch.json          topic, style chung, model, tỉ lệ khung
-    prompts.csv         danh sách ảnh (thứ duy nhất được sửa tay)
-    manifest.json       nhật ký file do tool tạo (không sửa tay)
-    images/             ảnh hiện tại; images/legacy/ là các bản vẽ trước (khi vẽ lại)
-    jobs/               file làm việc của từng job Gemini Batch
-```
+## Commands
 
-## Lệnh
+You rarely need these; the dashboard and your assistant cover them.
 
 ```bash
-./gbig key set | check                        # lưu (vào .env, gitignored) / kiểm tra API key
-./gbig init <name> [--dir <folder>]           # tạo project; ./gbig use <name> | projects | config
+./gbig open [project]                        # open the dashboard (starts it if needed)
+./gbig stop                                  # stop the dashboard
+./gbig key set | check                       # save / test the Gemini API key
+./gbig init <name> [--dir <folder>]          # create a project
+./gbig use <name> | projects                 # switch / list projects
 ./gbig new <batch> --topic "..." [--style "..."] [--aspect 16:9]
-./gbig import <batch> rows.json [--dry-run]
-./gbig validate <batch> | prompts <batch>
-./gbig gen submit <batch> [--ids a,b] [--yes]  # không có --yes = chỉ xem số ảnh + chi phí
-./gbig gen wait [<batch>] [--once] | gen cancel <batch> <job>
-./gbig open [<project>] | stop                # mở / tắt dashboard (chạy nền)
-./gbig audit | status | memory
+./gbig import <batch> rows.json [--dry-run]  # add prompts from a file
+./gbig gen submit <batch> [--yes]            # without --yes: only shows count and cost
+./gbig gen wait [--once] | gen cancel <batch> <job>
+./gbig status | audit                        # progress / check every file's MD5
 ```
 
-Phát triển tool: `docs/development.md`.
+## For developers
+
+See [`docs/development.md`](docs/development.md). Run the tests with `python3 -m unittest discover -s tests`
+(they use a fake Gemini, so no key and no cost).

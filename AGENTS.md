@@ -9,6 +9,8 @@ you handle the structure, the prompts and the commands. They are not necessarily
 - Always end with the **next step** (`./gbig status` prints it).
 
 Working on the tool's own code instead? Read `docs/development.md`.
+Every feature of the dashboard and CLI, in plain words: `guideline/features.md` (point people to
+`guideline/README.md` for the illustrated quick guide).
 
 ## "How do I open the dashboard?" (the most common question)
 

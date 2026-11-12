@@ -219,3 +219,6 @@ dialog.modal::backdrop { background: rgba(10, 9, 7, .65); backdrop-filter: blur(
 /* quick fix: highlighted once it holds a correction, because it changes what Gemini receives */
 .review input.fix { flex: 1 1 220px; }
 .review input.fix.active { border-color: var(--accent); background: var(--accent-soft); }
+
+/* the hidden attribute must win over display rules like .row-inline { display: flex } */
+[hidden] { display: none !important; }
