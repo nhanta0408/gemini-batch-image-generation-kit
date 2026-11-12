@@ -8,7 +8,7 @@ This kit is for people who use an **AI assistant** (Claude Code, Codex, Cursor, 
 reads [`AGENTS.md`](AGENTS.md) and does the technical work: it writes the prompts, runs the commands and
 watches the jobs. You decide what to make and approve the results.
 
-![Welcome screen](guideline/images/01-welcome.jpg)
+![Image Batch Studio](guideline/images/hero.png)
 
 ## What you need
 
